@@ -26,9 +26,6 @@ const NewPost = () => {
 
     const users = useSelector(selectAllUsers);
     const [userId, setuserId] = useState('');
-
-
-    // const canSave = Boolean(postTitle) && Boolean(postBody) && Boolean(userId);
     const canSave = [postTitle, postBody, userId].every(Boolean) && !isLoading;
 
     const onPostTagsChange = (e) => setPostTags(e.target.value);
