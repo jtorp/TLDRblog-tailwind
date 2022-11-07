@@ -1,15 +1,17 @@
-import { useParams, Link } from "react-router-dom";
 import Tag from "./Tag";
 import { TfiEraser } from "react-icons/tfi";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link, useLocation, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Reactions from "./Reactions";
 import { selectPostById } from "../features/posts/postsSlice";
 import PostAuthor from "./PostAuthor";
 import DateTime from "./DateTime";
+import { selectCurrentToken } from "../features/auth/authSlice";
 
 const PostPage = () => {
     const { id } = useParams();
+    const token = useSelector(selectCurrentToken)
+    const location = useLocation()
 
     // const posts = useSelector(selectAllPosts)
     const post = useSelector((state) => selectPostById(state, Number(id)))
@@ -63,13 +65,21 @@ const PostPage = () => {
                                 <Tag key={tag} text={tag} />
                             ))}
                         </div>
-                        <div className="flex items-center space-x-5 sm:pr-4">
-                            <Link to={`/post/edit/${post.id}`}>
-                                <button className="filled-btn ">
-                                    <TfiEraser size="25" /> Edit
-                                </button>
-                            </Link>
-                        </div>
+
+                        {token ?
+                            (<div className="flex items-center space-x-5 sm:pr-4">
+                                <Link to={`/post/edit/${post.id}`}>
+                                    <button className="filled-btn ">
+                                        <TfiEraser size="25" /> Edit
+                                    </button>
+                                </Link>
+                            </div>) :
+                            <div>
+                                <em>
+                                    Authors appreciate your reactions
+                                </em>
+                            </div>
+                        }
                     </div>
                 ) : (
                     <h2 className="dark:text-outrageousOrange text-2xl font-semibold">

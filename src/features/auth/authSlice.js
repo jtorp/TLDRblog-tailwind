@@ -1,28 +1,31 @@
 import { apiSlice } from "../api/apiSlice";
+import { createEntityAdapter, createSelector, createSlice } from "@reduxjs/toolkit";
+import { format } from "date-fns"
 
-export const authApiSlice = apiSlice.injectEndpoints({
-    endpoints: (builder) => ({
-        getAllUsers: builder.query({
-            query: () => "/users",
-            //add avatar based on gender if none use cat
-            transformResponse: responseData => {
 
-                const userData = responseData.map((user) => {
-                    if (!user.joined) user.joined = format(new Date(), "do MMM yyyy")
-                    if (!user.male) { user.avatar = "https://cdn-icons-png.flaticon.com/512/6997/6997603.png" }
-                    else {
-                        user.avatar = "https://cdn-icons-png.flaticon.com/512/6997/6997514.png"
-                    }
-                    return user
-                })
+const authSlice = createSlice({
+    name: 'auth',
+    initialState: { user: null, token: null },
+    reducers: {
+        setCredentials: (state, { payload: { user, token } }) => {
+            state.user = user;
+            state.token = token
 
-                return usersAdapter.setAll(initialState, userData)
-            },
-            providesTags: (result, error, arg) => {
-                console.log(result)
+        },
+        logout: (state, action) => {
+            state.user = null
+            state.token = null
+        }
+    },
 
-            }
-        })
+    //extra?
 
-    })
 })
+
+
+export const { setCredentials, logout } = authSlice.actions
+export default authSlice.reducer
+export const selectCurrentUser = (state) => state.auth.user;
+export const selectCurrentToken = (state) => state.auth.token;
+
+

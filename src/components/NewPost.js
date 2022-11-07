@@ -8,17 +8,20 @@ import {
     TfiUnderline
 } from "react-icons/tfi";
 import { TbBold } from "react-icons/tb";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, useLocation, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useAddNewPostMutation } from "../features/posts/postsSlice";
 import { selectAllUsers } from "../features/users/usersSlice";
 import EmojiPicker from 'emoji-picker-react';
+import { selectCurrentToken } from "../features/auth/authSlice";
 
 
 
 const NewPost = () => {
     const [addNewPost, { isLoading }] = useAddNewPostMutation()
     const navigate = useNavigate();
+    // const token = useSelector(selectCurrentToken)
+    // const location = useLocation()
 
     const [postTitle, setPostTitle] = useState("");
     const [postBody, setPostBody] = useState("");
@@ -69,7 +72,9 @@ const NewPost = () => {
 
 
     return (
+
         <main className="content-container">
+
             <form onSubmit={handlePublish} className="w-fit md:w-3/4 pb-44">
                 <div className="mb-6">
                     <label
