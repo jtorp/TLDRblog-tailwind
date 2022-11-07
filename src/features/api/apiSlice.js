@@ -1,13 +1,6 @@
 import { fetchBaseQuery, createApi } from "@reduxjs/toolkit/query/react"
 import { logout, setCredentials } from "../auth/authSlice"
 
-
-// export const apiSlice = createApi({
-//     reducerPath: 'api', // optional
-//     baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3500' }),
-//     tagTypes: ['Post', 'User'],
-//     endpoints: builder => ({})
-// })
 export const baseQuery = fetchBaseQuery({
     baseUrl: 'http://localhost:3500',
     credentials: 'include', //for cookies
@@ -19,7 +12,6 @@ export const baseQuery = fetchBaseQuery({
         return headers
     }
 })
-
 
 //wrapper query around base
 const baseQueryWithReAuth = async (args, api, extraOptions) => {
